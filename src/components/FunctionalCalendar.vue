@@ -34,7 +34,7 @@
           (fConfigs.isDatePicker ||
             fConfigs.isDateRange ||
             fConfigs.isMultipleDatePicker),
-        'vfc-dark': fConfigs.isDark
+        'vfc-dark': fConfigs.isDark,
       }"
     >
       <time-picker
@@ -105,7 +105,7 @@
                         'vfc-cursor-pointer vfc-underline':
                           fConfigs.changeMonthFunction &&
                           isNotSeparatelyAndFirst(key),
-                        'vfc-underline-active': showMonthPicker === key + 1
+                        'vfc-underline-active': showMonthPicker === key + 1,
                       }"
                     >
                       {{ calendarItem.month }}</span
@@ -118,7 +118,7 @@
                         'vfc-cursor-pointer vfc-underline':
                           fConfigs.changeYearFunction &&
                           isNotSeparatelyAndFirst(key),
-                        'vfc-underline-active': showYearPicker === key + 1
+                        'vfc-underline-active': showYearPicker === key + 1,
                       }"
                     >
                       {{ calendarItem.year }}
@@ -172,7 +172,7 @@
                   <template
                     v-if="
                       calendarItem.weeks.length < 6 &&
-                        !fConfigs.isLayoutExpandable
+                      !fConfigs.isLayoutExpandable
                     "
                   >
                     <!-- stabilizator -->
@@ -237,7 +237,7 @@ export default {
     Arrows,
     Footer,
     Day,
-    WeekNumbers
+    WeekNumbers,
   },
   mixins: [propsAndData],
   computed: {
@@ -280,7 +280,7 @@ export default {
             'MM:HH',
             'mm:HH',
             'MM:hh',
-            'mm:hh'
+            'mm:hh',
           ]
           let format = this.fConfigs.dateFormat
           if (this.dateFormat) {
@@ -310,8 +310,8 @@ export default {
         if (this.helpCalendar.getDateFromFormat(newValue).getMonth()) {
           this.calendar.selectedDate = newValue
         }
-      }
-    }
+      },
+    },
   },
   created() {
     this.setConfigs()
@@ -331,13 +331,13 @@ export default {
     this.popoverElement.addEventListener('focusin', this.onFocusIn)
     this.popoverElement.addEventListener('focusout', this.onFocusOut)
     window.addEventListener('click', this.hideMonthYearPicker, {
-      capture: true
+      capture: true,
     })
 
     // Reacts to external selected dates
     this.$watch(
       'value',
-      function(value) {
+      function (value) {
         if (
           typeof value === 'object' &&
           (value.hasOwnProperty('dateRange') ||
@@ -349,9 +349,10 @@ export default {
           value.hasOwnProperty('multipleDateRange')
         ) {
           this.calendar.multipleDateRange = value.multipleDateRange
-          const lastElement = this.calendar.multipleDateRange[
-            Math.max(0, this.calendar.multipleDateRange.length - 1)
-          ]
+          const lastElement =
+            this.calendar.multipleDateRange[
+              Math.max(0, this.calendar.multipleDateRange.length - 1)
+            ]
           if (
             lastElement &&
             ((lastElement.start && !lastElement.end) ||
@@ -366,14 +367,14 @@ export default {
 
     this.$watch(
       'showCalendar',
-      function(value) {
+      function (value) {
         if (value) this.$emit('opened')
         else this.$emit('closed')
       },
       { immediate: true, deep: true }
     )
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     window.removeEventListener('focusin', this.onFocusIn)
     window.removeEventListener('focusout', this.onFocusOut)
     window.removeEventListener('click', this.hideMonthYearPicker)
@@ -381,36 +382,48 @@ export default {
   watch: {
     enabledDates: {
       handler() {
-        this.fConfigs.enabledDates = this.enabledDates;
+        this.fConfigs.enabledDates = this.enabledDates
       },
-      deep: true
+      deep: true,
+    },
+    disabledDates: {
+      handler() {
+        this.fConfigs.disabledDates = this.disabledDates
+      },
+      deep: true,
+    },
+    markedDates: {
+      handler() {
+        this.fConfigs.markedDates = this.markedDates
+      },
+      deep: true,
     },
     'configs.enabledDates': {
       handler() {
-        this.fConfigs.enabledDates = this.configs.enabledDates;
+        this.fConfigs.enabledDates = this.configs.enabledDates
       },
-      deep: true
+      deep: true,
     },
     fConfigs: {
       handler() {
         this.markChooseDays()
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
     calendar: {
       handler() {
         this.markChooseDays()
       },
       deep: true,
-      immediate: true
+      immediate: true,
     },
     'calendar.currentDate': {
       handler(value) {
         this.$emit('input', this.calendar)
         this.checkLimits(value)
-      }
-    }
+      },
+    },
   },
   methods: {
     initCalendar() {
@@ -447,7 +460,7 @@ export default {
           weeks: this.helpCalendar.getFinalizedWeeks(
             date.getMonth(),
             date.getFullYear()
-          )
+          ),
         }
 
         this.listCalendars.push(calendar)
@@ -473,7 +486,7 @@ export default {
           weeks: this.helpCalendar.getFinalizedWeeks(
             date.getMonth(),
             date.getFullYear()
-          )
+          ),
         })
 
         if (!this.fConfigs.isMultiple) {
@@ -486,7 +499,7 @@ export default {
       if (typeof this.$getOptions !== 'undefined') {
         // Global Options
         globalOptions = this.$getOptions()
-        Object.keys(globalOptions).forEach(objectKey => {
+        Object.keys(globalOptions).forEach((objectKey) => {
           if (typeof this.fConfigs[objectKey] !== 'undefined') {
             this.$set(this.fConfigs, objectKey, globalOptions[objectKey])
           }
@@ -494,14 +507,14 @@ export default {
       }
 
       if (typeof this.configs !== 'undefined') {
-        Object.keys(this.fConfigs).forEach(objectKey => {
+        Object.keys(this.fConfigs).forEach((objectKey) => {
           if (typeof this.configs[objectKey] !== 'undefined') {
             // Get From Configs
             this.$set(this.fConfigs, objectKey, this.configs[objectKey])
           }
         })
       } else {
-        Object.keys(this.$props).forEach(objectKey => {
+        Object.keys(this.$props).forEach((objectKey) => {
           if (
             typeof this.fConfigs[objectKey] !== 'undefined' &&
             typeof this.$props[objectKey] !== 'undefined'
@@ -533,12 +546,12 @@ export default {
     },
     listRendering() {
       // Each Calendars
-      this.listCalendars.forEach(calendar => {
+      this.listCalendars.forEach((calendar) => {
         // Set Calendar Weeks
-        calendar.weeks.forEach(week => {
+        calendar.weeks.forEach((week) => {
           let finalizedDays = []
 
-          week.days.forEach(day => {
+          week.days.forEach((day) => {
             let date = new Date(day.year, day.month, day.day)
             let now = new Date()
 
@@ -554,12 +567,12 @@ export default {
             let checkMarked
             // With Custom Classes
             if (typeof this.fConfigs.markedDates[0] === 'object') {
-              checkMarked = this.fConfigs.markedDates.find(markDate => {
+              checkMarked = this.fConfigs.markedDates.find((markDate) => {
                 return markDate.date === this.helpCalendar.formatDate(date)
               })
             } else {
               // Without Classes
-              checkMarked = this.fConfigs.markedDates.find(markDate => {
+              checkMarked = this.fConfigs.markedDates.find((markDate) => {
                 return markDate === this.helpCalendar.formatDate(date)
               })
             }
@@ -588,7 +601,7 @@ export default {
               ),
               hideLeftAndRightDays: day.hideLeftAndRightDays,
               isToday,
-              isMarked
+              isMarked,
             })
           })
 
@@ -831,9 +844,8 @@ export default {
             diffDays < minSelDays
           ) {
             startDate.setDate(startDate.getDate() + (minSelDays - 1))
-            this.calendar.dateRange.end = this.helpCalendar.formatDate(
-              startDate
-            )
+            this.calendar.dateRange.end =
+              this.helpCalendar.formatDate(startDate)
           }
 
           if (
@@ -842,9 +854,8 @@ export default {
             diffDays < minSelDays
           ) {
             startDate.setDate(startDate.getDate() - (minSelDays - 1))
-            this.calendar.dateRange.start = this.helpCalendar.formatDate(
-              startDate
-            )
+            this.calendar.dateRange.start =
+              this.helpCalendar.formatDate(startDate)
           }
 
           // Maximum Selected Days
@@ -856,9 +867,8 @@ export default {
             diffDays >= maxSelDays
           ) {
             startDate.setDate(startDate.getDate() + (maxSelDays - 1))
-            this.calendar.dateRange.end = this.helpCalendar.formatDate(
-              startDate
-            )
+            this.calendar.dateRange.end =
+              this.helpCalendar.formatDate(startDate)
           }
 
           if (
@@ -867,9 +877,8 @@ export default {
             diffDays >= maxSelDays
           ) {
             startDate.setDate(startDate.getDate() - (maxSelDays - 1))
-            this.calendar.dateRange.start = this.helpCalendar.formatDate(
-              startDate
-            )
+            this.calendar.dateRange.start =
+              this.helpCalendar.formatDate(startDate)
           }
         }
 
@@ -885,10 +894,10 @@ export default {
       } else if (this.fConfigs.isMultipleDatePicker) {
         if (
           this.calendar.hasOwnProperty('selectedDates') &&
-          this.calendar.selectedDates.find(date => date.date === item.date)
+          this.calendar.selectedDates.find((date) => date.date === item.date)
         ) {
           let dateIndex = this.calendar.selectedDates.findIndex(
-            date => date.date === item.date
+            (date) => date.date === item.date
           )
           this.calendar.selectedDates.splice(dateIndex, 1)
         } else {
@@ -914,7 +923,7 @@ export default {
         }
 
         if (
-          this.calendar.selectedDates.find(date => date.date === item.date) &&
+          this.calendar.selectedDates.find((date) => date.date === item.date) &&
           this.fConfigs.isMultipleDatePicker
         ) {
           this.openTimePicker()
@@ -926,9 +935,9 @@ export default {
     markChooseDays() {
       let startDate = this.startDMY
       let endDate = this.endDMY
-      this.listCalendars.forEach(calendar => {
-        calendar.weeks.forEach(week => {
-          week.days.forEach(day => {
+      this.listCalendars.forEach((calendar) => {
+        calendar.weeks.forEach((week) => {
+          week.days.forEach((day) => {
             day.isMarked = false
             day.date = day.date.split(' ')[0]
             // Date Picker
@@ -937,7 +946,9 @@ export default {
             } else if (this.fConfigs.isMultipleDatePicker) {
               if (
                 this.calendar.hasOwnProperty('selectedDates') &&
-                this.calendar.selectedDates.find(date => date.date === day.date)
+                this.calendar.selectedDates.find(
+                  (date) => date.date === day.date
+                )
               )
                 day.isMarked = true
             } else {
@@ -957,7 +968,7 @@ export default {
               if (this.calendar.multipleDateRange) {
                 if (
                   ~this.calendar.multipleDateRange
-                    .map(range => range.start.split(' ')[0])
+                    .map((range) => range.start.split(' ')[0])
                     .indexOf(day.date)
                 ) {
                   day.isMouseToLeft = !!endDate
@@ -965,13 +976,13 @@ export default {
                 }
                 if (
                   ~this.calendar.multipleDateRange
-                    .map(range => range.end.split(' ')[0])
+                    .map((range) => range.end.split(' ')[0])
                     .indexOf(day.date)
                 ) {
                   day.isMouseToRight = !!endDate
                   day.isMarked = true
                 }
-                this.calendar.multipleDateRange.forEach(range => {
+                this.calendar.multipleDateRange.forEach((range) => {
                   if (range.start && range.start === range.end) {
                     day.isMouseToLeft = false
                     day.isMouseToRight = false
@@ -1185,9 +1196,10 @@ export default {
         }
       }
       if (this.calendar.multipleDateRange) {
-        let range = this.calendar.multipleDateRange[
-          this.calendar.multipleDateRange.length - 1
-        ]
+        let range =
+          this.calendar.multipleDateRange[
+            this.calendar.multipleDateRange.length - 1
+          ]
         if (!range) return
         // this.calendar.multipleDateRange.forEach((range, index) => {
         if (
@@ -1484,13 +1496,13 @@ export default {
       }
 
       let currentCalendar = this.listCalendars[calendarKey]
-      this.$emit('changedMonth', currentCalendar.date);
+      this.$emit('changedMonth', currentCalendar.date)
       this.updateCalendar()
     },
     pickYear(year, calendarKey) {
       this.showYearPicker = false
       if (!this.isSeparately) {
-        this.listCalendars.forEach(currentCalendar => {
+        this.listCalendars.forEach((currentCalendar) => {
           let date = currentCalendar.date
           currentCalendar.date = new Date(year, date.getMonth() + 1, 0)
           currentCalendar.key += hUniqueID()
@@ -1510,7 +1522,7 @@ export default {
         let finalYear = year + i
 
         years.push({
-          year: finalYear
+          year: finalYear,
         })
       }
       return years
@@ -1540,7 +1552,7 @@ export default {
     checkDateRangeEnd(date) {
       if (Array.isArray(this.fConfigs.markedDateRange)) {
         return (
-          this.fConfigs.markedDateRange.findIndex(range => {
+          this.fConfigs.markedDateRange.findIndex((range) => {
             return range.end === date
           }) !== -1
         )
@@ -1639,7 +1651,10 @@ export default {
         this.fConfigs.isModal &&
         !hElContains(this.popoverElement, e.relatedTarget)
       ) {
-        return (this.showCalendar = this.showMonthPicker = this.showYearPicker = false)
+        return (this.showCalendar =
+          this.showMonthPicker =
+          this.showYearPicker =
+            false)
       }
     },
 
@@ -1664,7 +1679,7 @@ export default {
     checkDateRangeStart(date) {
       if (Array.isArray(this.fConfigs.markedDateRange)) {
         return (
-          this.fConfigs.markedDateRange.findIndex(range => {
+          this.fConfigs.markedDateRange.findIndex((range) => {
             return range.start === date
           }) !== -1
         )
@@ -1683,8 +1698,8 @@ export default {
       //   start: '',
       //   end: ''
       // })
-    }
-  }
+    },
+  },
 }
 </script>
 
