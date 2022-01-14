@@ -1014,6 +1014,9 @@ export default {
                   day.isMarked = true
                 }
               }
+              if (this.fConfigs.isDateRange) {
+                day.dateRange = { startDate: startDate, endDate: endDate }
+              }
             }
             if (this.fConfigs.markedDates.includes(day.date))
               day.isMarked = true

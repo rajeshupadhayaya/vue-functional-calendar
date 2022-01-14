@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="vfc-multiple-input"
+      class="vfc-multiple-input d-flex"
       :class="{ 'vfc-dark': fConfigs.isDark }"
       v-if="fConfigs.isModal && fConfigs.isDateRange"
     >
@@ -14,6 +14,7 @@
         <input
           type="text"
           title="Start Date"
+          class="form-control"
           v-model="dateRangeSelectedStartDate"
           :placeholder="fConfigs.placeholder.split(' ')[0]"
           :readonly="!fConfigs.isTypeable"
@@ -22,6 +23,7 @@
         <input
           type="text"
           title="End Date"
+          class="form-control"
           v-model="dateRangeSelectedEndDate"
           :placeholder="fConfigs.placeholder.split(' ')[0]"
           :readonly="!fConfigs.isTypeable"
@@ -39,7 +41,7 @@
         :isTypeable="fConfigs.isTypeable"
       >
         <input
-          class="vfc-single-input"
+          class="vfc-single-input form-control"
           type="text"
           title="Date"
           v-model="singleSelectedDate"
@@ -56,7 +58,11 @@
     >
       <div class="vfc-tags-input-wrapper-default vfc-tags-input">
         <span
-          class="vfc-tags-input-badge vfc-tags-input-badge-pill vfc-tags-input-badge-selected-default"
+          class="
+            vfc-tags-input-badge
+            vfc-tags-input-badge-pill
+            vfc-tags-input-badge-selected-default
+          "
           v-for="(date, index) in calendar.selectedDates"
           :key="index"
         >
@@ -85,16 +91,16 @@ export default {
   props: {
     fConfigs: {
       type: Object,
-      required: true
+      required: true,
     },
     singleSelectedDate: {
       type: String,
-      required: true
+      required: true,
     },
     calendar: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     dateRangeSelectedStartDate: {
@@ -108,7 +114,7 @@ export default {
         if (this.helpCalendar.getDateFromFormat(newValue).getMonth()) {
           this.calendar.dateRange.start = newValue
         }
-      }
+      },
     },
     dateRangeSelectedEndDate: {
       get() {
@@ -119,9 +125,9 @@ export default {
         if (this.helpCalendar.getDateFromFormat(newValue).getMonth()) {
           this.calendar.dateRange.end = newValue
         }
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 
